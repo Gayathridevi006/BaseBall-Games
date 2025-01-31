@@ -10,6 +10,7 @@ import ProtectedRoute from "../Pages/auth/ProtectedRoute";
 import ScoreCard from "../Pages/ScoreCard";
 import CommentaryCard from "../Pages/Commentary";
 import GetStarted from "../Pages/GetStarted";
+import GameResult from "../Pages/Gameresult";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
     {
         path: "/commentary-card",
         element: <CommentaryCard />
+    },
+    {
+        path: "/game-result",
+        element: <GameResult />
     },
     // Fallback route for 404 at the root level
     {
