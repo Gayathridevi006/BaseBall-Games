@@ -5,7 +5,6 @@ import Signup from "../Pages/auth/Signup";
 import Login from "../Pages/auth/Login";
 import Features from "../Pages/Features";
 import Community from "../Pages/Community";
-import Gamingselection from "../Pages/Gamingselection";
 import NotFound from "../Pages/NotFound"; // Import a 404 page component
 import ProtectedRoute from "../Pages/auth/ProtectedRoute";
 import ScoreCard from "../Pages/ScoreCard";
