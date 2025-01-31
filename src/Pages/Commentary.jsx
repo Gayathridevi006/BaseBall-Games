@@ -104,101 +104,137 @@ const CommentaryCard = () => {
 
 
     return (
-        <div className="min-h-screen bg-purple-100">
+        <div className=" min-h-screen bg-purple-100">
             <div className="p-5">
-                <div className="bg-green-500 shadow-lg rounded-lg w-10 p-2">
+                <div className=" bg-green-500 shadow-lg rounded-lg w-10 p-2">
                     <Link to="/get-start">
-                        <ArrowBack className="text-6xl text-white cursor-pointer" />
+                        <ArrowBack className="text-6xl text-white cursor-pointer  " />
                     </Link>
                 </div>
-            </div>
-            {/* Main Section */}
-            <div className="max-w-7xl mx-auto p-5">
-            <main className="flex flex-col items-center py-5 lg:py-16 px-4 relative font-bold"> 
-                <h4 className="text-2xl lg:text-4xl !text-black mb-10">Select Options to have your card for the game</h4>
-                {/* Card Section */}
-                {/* <div className="w-full max-w-4xl p-6 bg-white rounded-xl shadow-lg"></div> */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Favorite Teams */}
-                    <Box sx={{ m: 1, width: "100%" }}>
-                        <FormControl fullWidth>
-                            <InputLabel variant="standard">Select favorite team</InputLabel>
-                            <NativeSelect value={team} onChange={handleTeamChange}>
-                                <option value="" disabled>Select favorite team</option>
-                                <option value="119">Kevin De Bruyne</option>
-                                <option value="118">Rodri</option>
-                                <option value="120">Erling Haaland</option>
-                                <option value="102">Mohamed Salah</option>
-                                <option value="100">Aaron Judge</option>
-                            </NativeSelect>
-                        </FormControl>
-                    </Box>
+            <div className="w-full max-w-4xl p-5">
+                {/* Outer Box with Shadow and Padding */}
+                <Box sx={{ m: 1, width: "160%",
+                    height: "200%",
+                    display: "flex",
+                    bgcolor : "background.paper"
+                }}>
+                        
+                    {/* Main Section */}
+                    <div className="max-w-7xl mx-auto p-5">
+                        <main className="flex flex-col items-center py-10 lg:py-16 px-4 relative font-bold">
+                            <h4 className="text-2xl lg:text-4xl !text-black mb-10">
+                                Select Options to have your card for the game
+                            </h4>
+                            {/* Card Section */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Favorite Teams */}
+                                <Box sx={{ m: 1, width: "100%" }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard">Select favorite team</InputLabel>
+                                        <NativeSelect value={team} onChange={handleTeamChange}>
+                                            <option value="" disabled>
+                                                Select favorite team
+                                            </option>
+                                            <option value="119">Kevin De Bruyne</option>
+                                            <option value="118">Rodri</option>
+                                            <option value="120">Erling Haaland</option>
+                                            <option value="102">Mohamed Salah</option>
+                                            <option value="100">Aaron Judge</option>
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box>
 
-                    {/* Favorite Players */}
-                    <Box sx={{ m: 1, width: "100%" }}>
-                        <FormControl fullWidth>
-                            <InputLabel variant="standard">Select favorite player</InputLabel>
-                            <NativeSelect value={player} onChange={handlePlayerChange}>
-                                <option value="" disabled>Select favorite player</option>
-                                    {loadingPlayers ? (
-                                        <option>Loading players...</option>
-                                    ) : playersList.length > 0 ? (
-                                        playersList.map((p) => (
-                                            <option key={p.id} value={p.id}>{p.fullName}</option>
-                                        ))
-                                    ) : (
-                                        <option>No players available</option>
-                                )}
-                            </NativeSelect>
-                        </FormControl>
-                    </Box>
+                                {/* Favorite Players */}
+                                <Box sx={{ m: 1, width: "100%" }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard">Select favorite player</InputLabel>
+                                        <NativeSelect value={player} onChange={handlePlayerChange}>
+                                            <option value="" disabled>
+                                                Select favorite player
+                                            </option>
+                                            {loadingPlayers ? (
+                                                <option>Loading players...</option>
+                                            ) : playersList.length > 0 ? (
+                                                playersList.map((p) => (
+                                                    <option key={p.id} value={p.id}>
+                                                        {p.fullName}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option>No players available</option>
+                                            )}
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box>
 
-                    {/* Language */}
-                    <Box sx={{ m: 1, width: "100%" }}>
-                            <FormControl fullWidth>
-                                <InputLabel variant="standard">Select a language</InputLabel>
-                                <NativeSelect value={language} onChange={(e) => setLanguage(e.target.value)}>
-                                    <option value="" disabled>Select a language</option>
-                                    <option value="en">English</option>
-                                    <option value="sp">Spanish</option>
-                                </NativeSelect>
-                            </FormControl>
-                    </Box>
+                                {/* Language */}
+                                <Box sx={{ m: 1, width: "100%" }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel variant="standard">Select a language</InputLabel>
+                                        <NativeSelect value={language} onChange={(e) => setLanguage(e.target.value)}>
+                                            <option value="" disabled>
+                                                Select a language
+                                            </option>
+                                            <option value="en">English</option>
+                                            <option value="sp">Spanish</option>
+                                        </NativeSelect>
+                                    </FormControl>
+                                </Box>
 
-                    {/* Commentary */}
-                    <Box sx={{ m: 5, width: "200%" }}>
-                        <TextField
-                            label="Commentary"
-                            variant="outlined"
-                            multiline
-                            rows={4}
-                            value={commentary}
-                            onChange={(e) => setCommentary(e.target.value)}
-                            fullWidth
-                        />
-                    </Box>
-                </div>
+                                {/* Commentary */}
+                                <Box sx={{ m: 5, width: "200%" , bgcolor:"-moz-initial" }}>
+                                    <TextField
+                                        label="Commentary"
+                                        variant="outlined"
+                                        multiline
+                                        rows={5}
+                                        value={commentary}
+                                        onChange={(e) => setCommentary(e.target.value)}
+                                        fullWidth
+                                    />
+                                </Box>
+                            </div>
 
-                <button onClick={handleStartGame} className="w-full md:w-96 focus:outline-none focus:ring-4 bg-blue-500 hover:bg-blue-300 text-white py-3 rounded-md text-lg font-medium transition duration-300">
-                    Start your game
-                </button>
-
-            {/* Modal */}
-            <Modal open={openModal} onClose={handleCloseModal}>
-                    <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, bgcolor: "background.paper", p: 4 }}>
-                    <h2>User Information</h2>
-                    <p><strong>Team:</strong> {team || "Not Selected"}</p>
-                    <p><strong>Player:</strong> {playerId || "Not Selected"}</p>
-                    <p><strong>Language:</strong> {language || "Not Selected"}</p>
-                    <p><strong>Commentary:</strong></p>
-                    <Button onClick={() => setOpenModal(false)} variant="contained">Close</Button>
+                            {/* Start Game Button */}
+                            <button
+                                onClick={handleStartGame}
+                                className="w-full md:w-96 focus:outline-none focus:ring-4 bg-blue-500 hover:bg-blue-300 text-white py-3 rounded-md text-lg font-medium transition duration-300"
+                            >
+                                Start your game
+                            </button>
+                        </main>
+                    </div>
                 </Box>
-            </Modal>
-            </main>
-            </div>
 
-        </div>
-    );
-};
+                {/* Modal */}
+                <Modal open={openModal} onClose={handleCloseModal}>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: 400,
+                            bgcolor: "background.paper",
+                            p: 4,
+                            borderRadius: 2,
+                            boxShadow: 3,
+                        }}
+                    >
+                        <h2>User Information</h2>
+                        <p><strong>Team:</strong> {team || "Not Selected"}</p>
+                        <p><strong>Player:</strong> {player || "Not Selected"}</p>
+                        <p><strong>Language:</strong> {language || "Not Selected"}</p>
+                        <p><strong>Commentary:</strong> {commentary || "Not Provided"}</p>
+                        <Button onClick={() => setOpenModal(false)} variant="contained">
+                            Close
+                        </Button>
+                    </Box>
+                    </Modal>
+                </div>
+            </div>
+            </div>
+        );
+    };
 
 export default CommentaryCard;
