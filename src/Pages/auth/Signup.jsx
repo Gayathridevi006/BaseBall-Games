@@ -1,12 +1,24 @@
-import AuthImage from "../../assets/Red-and-Black-Monogram-Sports-Baseball-Club-Logo.png";
-import Button from "../../components/Button";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-import { useEffect } from "react";
+import AuthImage from "../../assets/Red-and-Black-Monogram-Sports-Baseball-Club-Logo.png";
+import Button from "../../components/Button";
 
 const Signup = () => {
     const { signInWithGoogle, user } = useAuth();
     const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+        country: "",
+    });
+
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (user) {
@@ -14,11 +26,52 @@ const Signup = () => {
         }
     }, [user, navigate]);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError("");
+
+        if (formData.password !== formData.confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://127.0.0.1:8001/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: formData.email, // FastAPI expects "username"
+                    first_name: formData.first_name,
+                    last_name: formData.last_name,
+                    phone: formData.phone,
+                    password: formData.password,
+                    country: formData.country,
+                }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || "Registration failed");
+
+            alert(data.message);
+            navigate("/login");
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
     const handleGoogleSignIn = async () => {
         try {
             await signInWithGoogle();
         } catch (error) {
             console.error("Error signing in with Google:", error.message);
+            setError("Google sign-in failed. Please try again.");
         }
     };
 
@@ -32,98 +85,53 @@ const Signup = () => {
             }}
             className="min-h-screen w-full bg-black relative"
         >
-            {/* Overlay for deep black effect */}
+            {/* Overlay */}
             <div className="absolute inset-0 bg-[#1B1B2E] bg-opacity-90"></div>
 
             {/* Content */}
             <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 lg:px-10 text-white py-5 lg:py-10">
                 <h2 className="text-xl mb-4 text-center lg:text-3xl lg:mb-8 font-black uppercase">
-                    Start your journey with baseball gaming championship
+                    Start your journey with the Baseball Gaming Championship
                 </h2>
 
-                <div className="flex items-center w-full max-w-lg lg:max-w-2xl ">
-                    <div className="w-full py-8 px-6 bg-[#2C2C44] bg-opacity-70 rounded-lg border-4">
-                        {/* Form Header */}
-                        <div className="flex items-center gap-3 pb-6">
-                            <span className="bg-white h-10 w-10 rounded-full"></span>
-                            <h3 className="text-xl lg:text-2xl font-bold capitalize">
-                                Register to start playing with friends
-                            </h3>
-                        </div>
+                <div className="w-full max-w-lg bg-[#2C2C44] bg-opacity-70 p-6 rounded-lg border-4">
+                    <h3 className="text-xl lg:text-2xl font-bold capitalize mb-4">
+                        Register to start playing with friends
+                    </h3>
 
-                        {/* Form Fields */}
-                        <div className="flex flex-col gap-4 max-h-[60vh] lg:max-h-full scrollbar-none overflow-y-auto">
-                            <div className="flex flex-col lg:flex-row gap-2">
-                                <input
-                                    type="text"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="First Name"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Second Name"
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col lg:flex-row gap-2">
-                                <input
-                                    type="email"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Enter Your Email"
-                                    required
-                                />
-                                <input
-                                    type="number"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Enter Your Number"
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col lg:flex-row gap-2">
-                                <input
-                                    type="password"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Enter Your Password"
-                                    required
-                                />
-                                <input
-                                    type="password"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Confirm Your Password"
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col lg:flex-row gap-2">
-                                <input
-                                    type="text"
-                                    className="bg-transparent border p-3 flex-1 rounded-lg text-sm lg:text-base"
-                                    placeholder="Enter your country name"
-                                    required
-                                />
-                            </div>
+                    {error && <p className="text-red-500 mb-3">{error}</p>}
 
-                            <p>
-                                Have an account?{" "}
-                                <Link to="/login" className="underline hover:text-blue-400">
-                                    <i>Login</i>
-                                </Link>
-                            </p>
+                    {/* Signup Form */}
+                    <form onSubmit={handleRegister} className="flex flex-col gap-4">
+                        <input name="first_name" type="text" placeholder="First Name" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="last_name" type="text" placeholder="Last Name" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="email" type="email" placeholder="Email" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="phone" type="tel" placeholder="Phone Number" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="password" type="password" placeholder="Password" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="confirmPassword" type="password" placeholder="Confirm Password" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
+                        <input name="country" type="text" placeholder="Country" required className="bg-transparent border p-3 rounded-lg text-white" onChange={handleChange} />
 
-                            {/* Submit Button */}
-                            <Button className="border rounded-lg py-3 w-full text-sm lg:text-base">
-                                Sign Up
-                            </Button>
+                        <p>
+                            Already have an account?{" "}
+                            <Link to="/login" className="underline hover:text-blue-400">
+                                <i>Login</i>
+                            </Link>
+                        </p>
 
-                            <button
-                                onClick={handleGoogleSignIn}
-                                className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-lg w-full"
-                            >
-                                Sign in with Google Account
-                            </button>
-                        </div>
-                    </div>
+                        {/* Register Button */}
+                        <Button type="submit" className="border rounded-lg py-3 w-full text-sm lg:text-base">
+                            Sign Up
+                        </Button>
+
+                        {/* Google Sign-In Button */}
+                        <button
+                            type="button"
+                            onClick={handleGoogleSignIn}
+                            className="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg w-full"
+                        >
+                            Sign in with Google
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

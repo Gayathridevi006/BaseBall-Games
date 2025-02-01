@@ -86,6 +86,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider } from "../firebase";
 
+// Create AuthContext
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -93,8 +94,8 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);  // user state to store the current user
+    const [loading, setLoading] = useState(true);  // loading state to track auth status
 
     // Google Sign In
     const signInWithGoogle = async () => {
@@ -111,6 +112,9 @@ export function AuthProvider({ children }) {
                 lastLogin: new Date().toISOString()
             }, { merge: true }); // merge: true will update existing documents instead of overwriting
 
+            // Set user in context
+            setUser(user);
+
             return user;
         } catch (error) {
             throw error;
@@ -121,6 +125,7 @@ export function AuthProvider({ children }) {
     const logout = async () => {
         try {
             await signOut(auth);
+            setUser(null);  // Reset the user when logged out
         } catch (error) {
             throw error;
         }
@@ -129,15 +134,18 @@ export function AuthProvider({ children }) {
     // Monitor auth state changes
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
+            setUser(currentUser);  // Set user in context based on auth state
+            setLoading(false);  // Set loading to false once auth state is determined
         });
 
+        // Cleanup the listener when component unmounts
         return () => unsubscribe();
     }, []);
 
+    // Provide the user, setUser, signInWithGoogle, logout to context
     const value = {
         user,
+        setUser,  // Add setUser to context
         signInWithGoogle,
         logout
     };
@@ -148,4 +156,3 @@ export function AuthProvider({ children }) {
         </AuthContext.Provider>
     );
 }
-
