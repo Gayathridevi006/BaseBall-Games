@@ -135,11 +135,12 @@ const CommentaryCard = () => {
                                             <option value="" disabled>
                                                 Select favorite team
                                             </option>
-                                            <option value="119">Kevin De Bruyne</option>
-                                            <option value="118">Rodri</option>
-                                            <option value="120">Erling Haaland</option>
-                                            <option value="102">Mohamed Salah</option>
-                                            <option value="100">Aaron Judge</option>
+                                            <option value="119">Los Angeles Dodgers</option>
+                                            <option value="118">Kansas City Royals</option>
+                                            <option value="120">Washington Nationals</option>
+                                            <option value="121">New York Mets</option>
+                                            <option value="117">Houston Astros</option>
+                                            <option value="125">Indianapolis Blues</option>
                                         </NativeSelect>
                                     </FormControl>
                                 </Box>
